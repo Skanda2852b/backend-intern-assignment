@@ -1,5 +1,11 @@
 Below is a comprehensive `README.md` file tailored to your project. You can copy it directly into the root of your repository.
 
+
+
+<img width="1919" height="935" alt="Screenshot 2026-04-15 205738" src="https://github.com/user-attachments/assets/fedcbe4a-8fd1-415b-987c-bdd0390da133" />
+
+
+
 ```markdown
 # Task Manager API – Backend Developer Intern Assignment
 
