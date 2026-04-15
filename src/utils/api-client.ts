@@ -11,33 +11,66 @@ async function fetchAPI(endpoint: string, options: RequestInit = {}) {
     });
 
     const data = await res.json();
+
     if (!res.ok) {
         throw new Error(data.error || 'Something went wrong');
     }
+
     return data;
 }
 
+/* ================= AUTH ================= */
+
 export const auth = {
     register: (data: { name: string; email: string; password: string }) =>
-        fetchAPI('/auth/register', { method: 'POST', body: JSON.stringify(data) }),
+        fetchAPI('/auth/register', {
+            method: 'POST',
+            body: JSON.stringify(data),
+        }),
+
     login: (data: { email: string; password: string }) =>
-        fetchAPI('/auth/login', { method: 'POST', body: JSON.stringify(data) }),
+        fetchAPI('/auth/login', {
+            method: 'POST',
+            body: JSON.stringify(data),
+        }),
+
     logout: async () => {
-        // Clear cookie on client by setting expired cookie via API?
-        // For simplicity, we'll just call a logout endpoint (optional)
         await fetch('/api/auth/logout', { method: 'POST' });
     },
 };
 
+/* ================= TASKS ================= */
+
 export const tasks = {
     getAll: () => fetchAPI('/tasks'),
-    create: (data: any) => fetchAPI('/tasks', { method: 'POST', body: JSON.stringify(data) }),
+
+    create: (data: { title: string; description?: string }) =>
+        fetchAPI('/tasks', {
+            method: 'POST',
+            body: JSON.stringify(data),
+        }),
+
     update: (id: string, data: any) =>
-        fetchAPI(`/tasks/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
-    delete: (id: string) => fetchAPI(`/tasks/${id}`, { method: 'DELETE' }),
+        fetchAPI(`/tasks/${id}`, {
+            method: 'PUT',
+            body: JSON.stringify(data),
+        }),
+
+    delete: (id: string) =>
+        fetchAPI(`/tasks/${id}`, {
+            method: 'DELETE',
+        }),
 };
 
+/* ================= USERS ================= */
+
 export const users = {
-    updateRole: (id: string, role: string) =>
-        fetchAPI(`/users/${id}/role`, { method: 'PATCH', body: JSON.stringify({ role }) }),
+    // ✅ FIXED: added getAll
+    getAll: () => fetchAPI('/users'),
+
+    updateRole: (id: string, role: 'user' | 'admin') =>
+        fetchAPI(`/users/${id}/role`, {
+            method: 'PATCH',
+            body: JSON.stringify({ role }),
+        }),
 };

@@ -41,12 +41,17 @@ export default function Dashboard() {
         }
     };
 
+    const fetchUsers = async () => {
+        try {
+            const data = await users.getAll();
+            setUserList(data);
+        } catch (err: any) {
+            console.error('Failed to fetch users:', err);
+        }
+    };
+
     const fetchCurrentUser = async () => {
         try {
-            // Decode JWT from cookie or fetch /me endpoint (optional)
-            // We'll just extract role from tasks response or create a /me endpoint
-            // For simplicity, assume role is stored in localStorage after login? Not secure.
-            // Better: Create /api/v1/auth/me endpoint.
             const res = await fetch('/api/v1/auth/me');
             if (res.ok) {
                 const data = await res.json();
@@ -56,16 +61,7 @@ export default function Dashboard() {
                 }
             }
         } catch (err) {
-            console.error('Failed to fetch user');
-        }
-    };
-
-    const fetchUsers = async () => {
-        try {
-            const data = await users.getAll();
-            setUserList(data);
-        } catch (err: any) {
-            console.error(err);
+            console.error('Failed to fetch current user');
         }
     };
 
